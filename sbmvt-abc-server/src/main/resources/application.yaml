@@ -30,6 +30,13 @@ sbmvtAbc.datasource:
   validationQuery: SELECT 1
   url: jdbc:mysql://sbmvt-mysql-test:3306/sbmvt-abc
 
+# RabbitMQ Config
+spring.rabbitmq:
+  host: sbmvt-rabbitmq-test
+  port: 5672
+  username: sbmvt
+  password: hehehe
+
 # Profiles
 spring:
   profiles.active: test
@@ -38,7 +45,7 @@ spring:
   profiles: test
 
 logging:
-  level.ROOT: DEBUG
+  level.ROOT: INFO
 ---
 spring:
   profiles: online
@@ -54,3 +61,6 @@ eureka:
 
 # DB Config Online
 sbmvtAbc.datasource.url: jdbc:mysql://sbmvt-mysql-online:3306/sbmvt-abc
+
+# RabbitMQ Config Online
+spring.rabbitmq.host: sbmvt-rabbitmq-online
