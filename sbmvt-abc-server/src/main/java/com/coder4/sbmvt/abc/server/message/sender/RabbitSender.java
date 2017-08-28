@@ -88,7 +88,6 @@ public abstract class RabbitSender<T> {
         } catch (Throwable t) {
             LOG.error("RabbitSender exception", t);
             senderRetryQueue.offer(msg);
-            rabbitClient.reconnect();
         }
     }
 

@@ -18,6 +18,7 @@ import java.util.concurrent.Executor;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
 
 /**
  * @author coder4
@@ -45,10 +46,6 @@ public class RabbitClient {
 
     private ConnectionFactory connectionFactory;
 
-    private volatile Connection connection;
-
-    private ThreadLocal<Channel> channelThreadLocal = new ThreadLocal<Channel>();
-
     private ExecutorService executorService = Executors.newFixedThreadPool(20);
 
     public void init() {
@@ -59,93 +56,27 @@ public class RabbitClient {
         connectionFactory.setHost(host);
         connectionFactory.setPort(port);
         connectionFactory.setVirtualHost(vhost);
-
-        // Init Connection
-        connect();
+        connectionFactory.setAutomaticRecoveryEnabled(true);
     }
 
     public void stop() {
         try {
-            connection.close();
             LOG.info("RabbitClient shutdown-ing.");
             executorService.shutdown();
             executorService.awaitTermination(3, TimeUnit.SECONDS);
             LOG.info("RabbitClient shutdown");
         } catch (InterruptedException e) {
             e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
         }
-    }
-
-    private void connect() {
-        try {
-            synchronized (this) {
-                connection = connectionFactory.newConnection(executorService);
-            }
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-    public void reconnect() {
-        if (connection != null && connection.isOpen()) {
-            try {
-                synchronized (this) {
-                    connection.close();
-                }
-            } catch (Throwable t) {
-                LOG.warn("RabbitClient close conn failed", t);
-            }
-        }
-        connect();
-        LOG.info("RabbitClient reconnected.");
-    }
-
-    private void guaranteeConnect() {
-        if (connection == null || !connection.isOpen()) {
-            if (connection == null || !connection.isOpen()) {
-                reconnect();
-            }
-        }
-    }
-
-    private Channel createChannelTL() throws IOException {
-        // Make sure conn is ready
-        guaranteeConnect();
-        // Make Channel
-        Channel channel = connection.createChannel();
-        channel.basicQos(prefetchCount);
-        // Update thread local
-        channelThreadLocal.set(channel);
-        return channel;
     }
 
     public Channel getChannel() {
         try {
-            Channel channel = channelThreadLocal.get();
-
-            if (channel == null ||
-                    !channel.isOpen() ||
-                    channel.getConnection() != connection ||
-                    !channel.getConnection().isOpen()) {
-                channel = createChannelTL();
-            }
-
-            return channel;
-        } catch (Exception e) {
+            return connectionFactory.newConnection(executorService).createChannel();
+        } catch (IOException e) {
             throw new RuntimeException(e);
-        }
-    }
-
-    public void closeChannel() {
-        Channel channel = channelThreadLocal.get();
-        if (channel != null) {
-            try {
-                channel.close();
-            } catch (Exception e) {
-                LOG.warn("RabbitClient close channel failed.");
-            }
+        } catch (TimeoutException e) {
+            throw new RuntimeException(e);
         }
     }
 }
