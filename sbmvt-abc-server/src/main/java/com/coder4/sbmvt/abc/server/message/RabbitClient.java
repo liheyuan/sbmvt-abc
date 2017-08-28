@@ -42,8 +42,6 @@ public class RabbitClient {
     // TODO
     private String vhost = "sbmvt";
 
-    private int prefetchCount = 1;
-
     private ConnectionFactory connectionFactory;
 
     private ExecutorService executorService = Executors.newFixedThreadPool(20);
@@ -72,7 +70,9 @@ public class RabbitClient {
 
     public Channel getChannel() {
         try {
-            return connectionFactory.newConnection(executorService).createChannel();
+            Channel channel = connectionFactory.newConnection(executorService).createChannel();
+            channel.basicQos(1);
+            return channel;
         } catch (IOException e) {
             throw new RuntimeException(e);
         } catch (TimeoutException e) {

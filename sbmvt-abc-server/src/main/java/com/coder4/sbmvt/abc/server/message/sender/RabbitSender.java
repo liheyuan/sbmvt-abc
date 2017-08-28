@@ -34,10 +34,6 @@ public abstract class RabbitSender<T> {
 
     private Thread retryThread;
 
-    public RabbitSender() {
-
-    }
-
     @PostConstruct
     public void init() {
         // TODO

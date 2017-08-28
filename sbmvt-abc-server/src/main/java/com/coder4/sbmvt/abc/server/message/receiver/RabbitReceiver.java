@@ -28,6 +28,8 @@ public abstract class RabbitReceiver<Msg> {
 
     protected RabbitClient rabbitClient;
 
+    private static int prefetchCount = 1;
+
     @PostConstruct
     private void init() {
         // TODO
@@ -37,6 +39,7 @@ public abstract class RabbitReceiver<Msg> {
         try {
             // exchange
             Channel channel = rabbitClient.getChannel();
+
             channel.exchangeDeclare(getExchangeName(),
                     "topic",
                     true,
