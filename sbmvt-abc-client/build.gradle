@@ -1,0 +1,13 @@
+bootRepackage {
+    enabled = false
+}
+
+dependencies {
+    compile project(':sbmvt-abc-common')
+
+    compile('org.springframework.boot:spring-boot-autoconfigure')
+
+    compile 'com.github.liheyuan:sbmvt-thrift-client:0.0.3'
+
+}
+

@@ -1,0 +1,56 @@
+
+# Use different management port as security rule
+management:
+    port: 8081
+    security.enabled: false
+
+# Enable shutdown
+endpoints.shutdown.enabled: true
+
+# Thrift server config
+sbmvtAbcThriftServer:
+  port: 3000
+  name: sbmvt-abc-thrift-server
+
+# Eureka Config
+eureka:
+  instance:
+    appname: ${sbmvtAbcThriftServer.name}
+    nonSecurePort: ${sbmvtAbcThriftServer.port}
+    lease-renewal-interval-in-seconds: 5
+    lease-expiration-duration-in-seconds: 10
+  client.serviceUrl.defaultZone: http://localhost:8761/eureka/
+
+# DB Config
+sbmvtAbc.datasource:
+  # For more see http://tomcat.apache.org/tomcat-7.0-doc/jdbc-pool.html#Common_Attributes
+  username: sbmvt
+  password: hehehe 
+  testOnBorrow: true
+  validationQuery: SELECT 1
+  url: jdbc:mysql://sbmvt-mysql-test:3306/sbmvt-abc
+
+# Profiles
+spring:
+  profiles.active: test
+---
+spring:
+  profiles: test
+
+logging:
+  level.ROOT: DEBUG
+---
+spring:
+  profiles: online
+
+logging:
+  level.ROOT: INFO
+  pattern.console:
+  file: my-sample-server.log
+
+# Eureka Config Online
+eureka:
+  client.serviceUrl.defaultZone: http://eureka-server-online:8761/eureka/
+
+# DB Config Online
+sbmvtAbc.datasource.url: jdbc:mysql://sbmvt-mysql-online:3306/sbmvt-abc
