@@ -9,6 +9,7 @@ package com.coder4.sbmvt.abc.server.message.sender;
 import com.coder4.sbmvt.abc.server.message.RabbitClient;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.rabbitmq.client.Channel;
 import com.rabbitmq.client.MessageProperties;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -34,8 +35,10 @@ public abstract class RabbitSender<T> {
 
     private Thread retryThread;
 
+    private Channel channel;
+
     @PostConstruct
-    public void init() {
+    public void init() throws Exception {
         // TODO
         rabbitClient = new RabbitClient();
         rabbitClient.init();
@@ -43,6 +46,8 @@ public abstract class RabbitSender<T> {
         jsonObjectMapper = Jackson2ObjectMapperBuilder.json().build();
 
         senderRetryQueue = new LinkedBlockingDeque<>(SENDER_RETRY_QUEUE_MAX_SIZE);
+
+        channel = rabbitClient.createChannel();
 
         start();
     }
@@ -71,8 +76,7 @@ public abstract class RabbitSender<T> {
     public void send(T msg) {
         byte[] payload = serialize(msg);
         try {
-
-            rabbitClient.getChannel().basicPublish(
+            channel.basicPublish(
                     getExchangeName(),
                     getRoutingKey(msg),
                     false,

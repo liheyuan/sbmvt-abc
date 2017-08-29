@@ -6,11 +6,8 @@
  */
 package com.coder4.sbmvt.abc.server.thrift;
 
-import com.coder4.sbmvt.abc.server.message.receiver.AbcEventReceiver;
-import com.coder4.sbmvt.abc.server.message.sender.AbcEventSender;
 import com.coder4.sbmvt.abc.thrift.SbmvtAbcThrift;
 import org.apache.thrift.TException;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 /**
@@ -18,12 +15,6 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class ThriftServerHandler implements SbmvtAbcThrift.Iface {
-
-    @Autowired
-    private AbcEventReceiver receiver;
-
-    @Autowired
-    private AbcEventSender sender;
 
     @Override
     public String sayHi() throws TException {

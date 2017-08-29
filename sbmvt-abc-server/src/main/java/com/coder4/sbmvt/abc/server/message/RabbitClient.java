@@ -6,7 +6,6 @@
  */
 package com.coder4.sbmvt.abc.server.message;
 
-import com.rabbitmq.client.Address;
 import com.rabbitmq.client.Channel;
 import com.rabbitmq.client.Connection;
 import com.rabbitmq.client.ConnectionFactory;
@@ -14,11 +13,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
-import java.util.concurrent.Executor;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.TimeUnit;
-import java.util.concurrent.TimeoutException;
 
 /**
  * @author coder4
@@ -44,7 +38,7 @@ public class RabbitClient {
 
     private ConnectionFactory connectionFactory;
 
-    private ExecutorService executorService = Executors.newFixedThreadPool(20);
+    private volatile Connection connection;
 
     public void init() {
         // Init Connection Factory
@@ -55,28 +49,42 @@ public class RabbitClient {
         connectionFactory.setPort(port);
         connectionFactory.setVirtualHost(vhost);
         connectionFactory.setAutomaticRecoveryEnabled(true);
+
+        // Connect
+        connect();
     }
 
     public void stop() {
         try {
-            LOG.info("RabbitClient shutdown-ing.");
-            executorService.shutdown();
-            executorService.awaitTermination(3, TimeUnit.SECONDS);
-            LOG.info("RabbitClient shutdown");
-        } catch (InterruptedException e) {
-            e.printStackTrace();
+            if (connection != null) {
+                connection.close();
+            }
+            LOG.info("RabbitClient stopped");
+        } catch (Exception e) {
+            LOG.warn("RabbitClient stop excepton", e);
         }
     }
 
-    public Channel getChannel() {
+    public Channel createChannel() throws IOException {
+        // Make Channel
+        Channel channel = connection.createChannel();
+        channel.basicQos(1);
+        return channel;
+    }
+
+    private void connect() {
         try {
-            Channel channel = connectionFactory.newConnection(executorService).createChannel();
-            channel.basicQos(1);
-            return channel;
-        } catch (IOException e) {
+            connection = connectionFactory.newConnection();
+        } catch (Exception e) {
             throw new RuntimeException(e);
-        } catch (TimeoutException e) {
-            throw new RuntimeException(e);
+        }
+    }
+
+    public static void closeChannel(Channel channel) {
+        try {
+            channel.close();
+        } catch (Exception e) {
+
         }
     }
 }

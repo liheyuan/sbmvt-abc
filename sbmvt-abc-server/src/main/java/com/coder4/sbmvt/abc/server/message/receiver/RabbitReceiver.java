@@ -17,7 +17,10 @@ import org.springframework.http.converter.json.Jackson2ObjectMapperBuilder;
 
 import javax.annotation.PostConstruct;
 import java.io.IOException;
+import java.lang.ref.WeakReference;
 import java.lang.reflect.ParameterizedType;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author coder4
@@ -28,7 +31,9 @@ public abstract class RabbitReceiver<Msg> {
 
     protected RabbitClient rabbitClient;
 
-    private static int prefetchCount = 1;
+    List<WeakReference<Channel>> channels = new ArrayList();
+
+    private static int consumerCount = 20;
 
     @PostConstruct
     private void init() {
@@ -36,9 +41,25 @@ public abstract class RabbitReceiver<Msg> {
         rabbitClient = new RabbitClient();
         rabbitClient.init();
 
+        // thread pool
+        for (int i = 0; i < consumerCount; i++) {
+            try {
+                Channel channel = newChannel();
+                registerConsume(channel);
+                channels.add(new WeakReference<>(channel));
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
+        }
+
+    }
+
+    private Channel newChannel() throws IOException {
+
         try {
+
             // exchange
-            Channel channel = rabbitClient.getChannel();
+            Channel channel = rabbitClient.createChannel();
 
             channel.exchangeDeclare(getExchangeName(),
                     "topic",
@@ -62,30 +83,35 @@ public abstract class RabbitReceiver<Msg> {
                     getQueueName(),
                     getExchangeName(),
                     routingKey);
-
-            // consume
-            channel.basicConsume(getQueueName(), false, "consumerTag",
-                    new DefaultConsumer(channel) {
-
-                        @Override
-                        public void handleDelivery(String consumerTag,
-                                                   Envelope envelope,
-                                                   BasicProperties properties,
-                                                   byte[] body) throws IOException {
-                            Msg msg = deserilize(body);
-                            // Call back
-                            onReceive(msg);
-                            // Ack after call back
-                            long deliveryTag = envelope.getDeliveryTag();
-                            channel.basicAck(deliveryTag, false);
-                        }
-                    });
-
-
+            return channel;
         } catch (Exception e) {
-            throw new RuntimeException(e);
+            LOG.error("RabbitReceiver newChannel exception", e);
+            return null;
         }
+    }
 
+    private void registerConsume(Channel channel) throws Exception {
+
+        // consume
+        channel.basicConsume(getQueueName(), false, new DefaultConsumer(channel) {
+
+            @Override
+            public void handleDelivery(String consumerTag,
+                                       Envelope envelope,
+                                       BasicProperties properties,
+                                       byte[] body) throws IOException {
+                Msg msg = deserilize(body);
+                // Call back
+                try {
+                    onReceive(msg);
+                } catch (Exception e) {
+                    LOG.error("RabbitReceiver exception", e);
+                }
+                // Ack after call back
+                long deliveryTag = envelope.getDeliveryTag();
+                channel.basicAck(deliveryTag, false);
+            }
+        });
     }
 
     protected Msg deserilize(byte[] data) {
@@ -98,6 +124,12 @@ public abstract class RabbitReceiver<Msg> {
     }
 
     protected void stop() {
+        channels.stream().forEach(wr -> {
+            Channel channel = wr.get();
+            if (channel != null) {
+                RabbitClient.closeChannel(channel);
+            }
+        });
         rabbitClient.stop();
     }
 

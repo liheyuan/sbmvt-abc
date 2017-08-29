@@ -18,7 +18,15 @@ public class AbcEventReceiver extends RabbitReceiver<AbcEvent> implements Dispos
 
     @Override
     protected void onReceive(AbcEvent abcEvent) {
-        System.out.println("got an message!!!" + Thread.currentThread().getId());
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        if (abcEvent.getId() > 2) {
+            //throw new RuntimeException("hehe");
+        }
+        LOG.info("got an message!!!" + Thread.currentThread().getId());
     }
 
     @Override
