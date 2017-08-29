@@ -67,7 +67,7 @@ public abstract class RabbitSender<T> {
         rabbitClient.stop();
     }
 
-    public void start() {
+    private void start() {
         retryThread = new Thread(() -> {
             try {
                 retryChannel = rabbitClient.createChannel();
@@ -76,20 +76,22 @@ public abstract class RabbitSender<T> {
                 return;
             }
 
-            while (!Thread.currentThread().isInterrupted()) {
-                T msg = null;
-                try {
-                    msg = senderRetryQueue.take();
-                    resend(msg);
-                    LOG.info("resend success");
-                } catch (InterruptedException e) {
-                    // will exit while next tick
-                } catch (Throwable t) {
-                    LOG.error("RabbitSender retry thread exception", t);
-                    if (msg != null) {
-                        senderRetryQueue.offer(msg);
+            try {
+                while (!Thread.currentThread().isInterrupted()) {
+                    T msg = null;
+                    try {
+                        msg = senderRetryQueue.take();
+                        resend(msg);
+                        LOG.info("resend success");
+                    } catch (IOException t) {
+                        LOG.error("RabbitSender retry thread exception", t);
+                        if (msg != null) {
+                            senderRetryQueue.offer(msg);
+                        }
                     }
                 }
+            } catch (InterruptedException e) {
+                // will exit
             }
         });
 
@@ -105,11 +107,11 @@ public abstract class RabbitSender<T> {
         }
     }
 
-    private void resend(T msg) throws Exception {
+    private void resend(T msg) throws IOException {
         doSend(retryChannel, msg);
     }
 
-    private void doSend(Channel channel, T msg) throws Exception {
+    private void doSend(Channel channel, T msg) throws IOException {
         byte[] payload = serialize(msg);
         channel.basicPublish(
                 getExchangeName(),

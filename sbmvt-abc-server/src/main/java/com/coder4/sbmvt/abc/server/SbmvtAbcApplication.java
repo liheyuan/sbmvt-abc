@@ -13,5 +13,6 @@ public class SbmvtAbcApplication {
 		// To disabled web environment, change `true` to `false`
 		application.setWebEnvironment(true);
 		application.run(args);
+
 	}
 }
