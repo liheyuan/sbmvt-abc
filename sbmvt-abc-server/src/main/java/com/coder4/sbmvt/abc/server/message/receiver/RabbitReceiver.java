@@ -103,7 +103,7 @@ public abstract class RabbitReceiver<Msg> {
                 Msg msg = deserilize(body);
                 // Call back
                 try {
-                    onReceive(msg);
+                    onEvent(msg);
                 } catch (Exception e) {
                     LOG.error("RabbitReceiver exception", e);
                 }
@@ -133,7 +133,7 @@ public abstract class RabbitReceiver<Msg> {
         rabbitClient.stop();
     }
 
-    protected abstract void onReceive(Msg msg);
+    protected abstract void onEvent(Msg msg);
 
     protected abstract String getExchangeName();
 

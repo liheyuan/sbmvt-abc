@@ -17,7 +17,7 @@ import org.springframework.stereotype.Service;
 public class AbcEventReceiver extends RabbitReceiver<AbcEvent> implements DisposableBean {
 
     @Override
-    protected void onReceive(AbcEvent abcEvent) {
+    protected void onEvent(AbcEvent abcEvent) {
         try {
             Thread.sleep(1000);
         } catch (InterruptedException e) {
