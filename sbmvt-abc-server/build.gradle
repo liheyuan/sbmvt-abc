@@ -9,7 +9,7 @@ dependencies {
     compile('org.springframework.boot:spring-boot-starter-jdbc')
     compile('mysql:mysql-connector-java')
     // If Need RabbitMQ
-    compile("com.rabbitmq:amqp-client:4.2.0")
+    compile("com.github.liheyuan:sbmvt-rabbitmq:0.0.1")
 
     compile 'com.github.liheyuan:sbmvt-thrift-server:0.0.3'
 

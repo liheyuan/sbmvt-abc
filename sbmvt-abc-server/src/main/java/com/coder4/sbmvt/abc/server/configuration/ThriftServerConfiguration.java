@@ -46,7 +46,7 @@ public class ThriftServerConfiguration implements InitializingBean, DisposableBe
         LOG.info("ThriftServerConfiguration destroy, shutdown eureka client.");
         eurekaClient.shutdown();
 
-        //Thread.sleep(TimeUnit.SECONDS.toMillis(6));
+        Thread.sleep(TimeUnit.SECONDS.toMillis(6));
         LOG.info("ThriftServerConfiguration destroy, shutdown rpc server.");
         thriftServer.stop();
     }

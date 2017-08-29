@@ -7,6 +7,7 @@
 package com.coder4.sbmvt.abc.server.message.receiver;
 
 import com.coder4.sbmvt.abc.server.message.event.AbcEvent;
+import com.coder4.sbmvt.rabbitmq.RabbitReceiver;
 import org.springframework.beans.factory.DisposableBean;
 import org.springframework.stereotype.Service;
 
