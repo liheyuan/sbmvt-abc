@@ -16,6 +16,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.http.converter.json.Jackson2ObjectMapperBuilder;
 
 import javax.annotation.PostConstruct;
+import java.io.IOException;
 import java.util.concurrent.LinkedBlockingDeque;
 
 /**
@@ -35,7 +36,9 @@ public abstract class RabbitSender<T> {
 
     private Thread retryThread;
 
-    private Channel channel;
+    private Channel senderChannel;
+
+    private Channel retryChannel;
 
     @PostConstruct
     public void init() throws Exception {
@@ -47,25 +50,45 @@ public abstract class RabbitSender<T> {
 
         senderRetryQueue = new LinkedBlockingDeque<>(SENDER_RETRY_QUEUE_MAX_SIZE);
 
-        channel = rabbitClient.createChannel();
+        senderChannel = rabbitClient.createChannel();
 
         start();
     }
 
     public void stop() {
-        retryThread.interrupt();
+        try {
+            senderChannel.close();
+            retryChannel.close();
+            retryThread.interrupt();
+            retryThread.join();
+        } catch (Exception e) {
+            LOG.warn("join retryThread failed", e);
+        }
         rabbitClient.stop();
     }
 
     public void start() {
         retryThread = new Thread(() -> {
+            try {
+                retryChannel = rabbitClient.createChannel();
+            } catch (IOException e) {
+                LOG.error("Create retryThread failed.", e);
+                return;
+            }
+
             while (!Thread.currentThread().isInterrupted()) {
+                T msg = null;
                 try {
-                    send(senderRetryQueue.take());
+                    msg = senderRetryQueue.take();
+                    resend(msg);
+                    LOG.info("resend success");
                 } catch (InterruptedException e) {
                     // will exit while next tick
                 } catch (Throwable t) {
                     LOG.error("RabbitSender retry thread exception", t);
+                    if (msg != null) {
+                        senderRetryQueue.offer(msg);
+                    }
                 }
             }
         });
@@ -74,21 +97,29 @@ public abstract class RabbitSender<T> {
     }
 
     public void send(T msg) {
-        byte[] payload = serialize(msg);
         try {
-            channel.basicPublish(
-                    getExchangeName(),
-                    getRoutingKey(msg),
-                    false,
-                    false,
-                    MessageProperties.MINIMAL_PERSISTENT_BASIC,
-                    payload);
-
-            LOG.debug("RabbitSender success send a msg.");
-        } catch (Throwable t) {
-            LOG.error("RabbitSender exception", t);
+            doSend(senderChannel, msg);
+        } catch (Exception e) {
+            LOG.error("RabbitSender exception", e);
             senderRetryQueue.offer(msg);
         }
+    }
+
+    private void resend(T msg) throws Exception {
+        doSend(retryChannel, msg);
+    }
+
+    private void doSend(Channel channel, T msg) throws Exception {
+        byte[] payload = serialize(msg);
+        channel.basicPublish(
+                getExchangeName(),
+                getRoutingKey(msg),
+                false,
+                false,
+                MessageProperties.MINIMAL_PERSISTENT_BASIC,
+                payload);
+
+        LOG.debug("RabbitSender success send a msg.");
     }
 
     protected byte[] serialize(T msg) {

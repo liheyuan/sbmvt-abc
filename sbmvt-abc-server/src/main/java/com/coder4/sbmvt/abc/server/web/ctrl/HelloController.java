@@ -34,7 +34,7 @@ public class HelloController {
     )
     public String getLessonUserReport(
             @PathVariable(value = "id") String id) {
-        for (int i = 0; i< 100; i++) {
+        for (int i = 0; i < 3; i++) {
             AbcEvent event = new AbcEvent();
             event.setId(Integer.parseInt(id));
             sender.send(event);
