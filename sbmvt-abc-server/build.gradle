@@ -2,16 +2,19 @@
 dependencies {
     compile project(':sbmvt-abc-common')
 
-    compile('org.springframework.boot:spring-boot-starter-web')
-    compile('org.springframework.boot:spring-boot-starter-actuator')
-    compile('org.springframework.cloud:spring-cloud-starter-eureka:1.3.1.RELEASE')
+    compile 'org.springframework.boot:spring-boot-starter-web'
+    compile 'org.springframework.boot:spring-boot-starter-actuator'
+    compile 'org.springframework.cloud:spring-cloud-starter-eureka:1.3.1.RELEASE'
     // If Need MySQL
-    compile('org.springframework.boot:spring-boot-starter-jdbc')
-    compile('mysql:mysql-connector-java')
+    compile 'org.springframework.boot:spring-boot-starter-jdbc'
+    compile 'mysql:mysql-connector-java'
     // If Need RabbitMQ
-    compile("com.github.liheyuan:sbmvt-rabbitmq:0.0.1")
+    compile 'com.github.liheyuan:sbmvt-rabbitmq:0.0.1'
+    // If Need Redis
+    compile 'org.springframework.boot:spring-boot-starter-data-redis'
+    compile 'com.github.liheyuan:sbmvt-redis:0.0.1'
 
     compile 'com.github.liheyuan:sbmvt-thrift-server:0.0.3'
 
-    testCompile('org.springframework.boot:spring-boot-starter-test')
+    testCompile 'org.springframework.boot:spring-boot-starter-test'
 }

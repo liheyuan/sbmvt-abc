@@ -38,6 +38,19 @@ rabbitmq:
   password: hehehe
   vhost: sbmvt
 
+# Redis Config
+sbmvtAbc.redis:
+  database: 0
+  host: sbmvt-redis-test
+  port: 6379
+  password: hehehe
+  timeout: 2000
+  pool:
+    max-active: 16
+    max-wait: -1
+    min-idle: 2
+    max-idle: 8
+
 # Profiles
 spring:
   profiles.active: test
@@ -65,3 +78,6 @@ sbmvtAbc.datasource.url: jdbc:mysql://sbmvt-mysql-online:3306/sbmvt-abc
 
 # RabbitMQ Config Online
 rabbitmq.host: sbmvt-rabbitmq-online
+
+# Redis Config Online
+spring.redis.host: sbmvt-redis-online
