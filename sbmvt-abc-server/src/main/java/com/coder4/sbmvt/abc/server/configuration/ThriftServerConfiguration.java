@@ -43,8 +43,14 @@ public class ThriftServerConfiguration implements InitializingBean, DisposableBe
     @Override
     public void destroy() throws Exception {
         // Unregister from eureka server & Sleep for 6 seconds
-        LOG.info("ThriftServerConfiguration destroy, shutdown eureka client.");
-        eurekaClient.shutdown();
+        // current has bug, have to try catch
+        // https://github.com/spring-cloud/spring-cloud-netflix/issues/2099
+        try {
+            LOG.info("ThriftServerConfiguration destroy, shutdown eureka client.");
+            eurekaClient.shutdown();
+        } catch (Exception e) {
+            LOG.error("eurekaClient shutdown exception", e);
+        }
 
         Thread.sleep(TimeUnit.SECONDS.toMillis(6));
         LOG.info("ThriftServerConfiguration destroy, shutdown rpc server.");
