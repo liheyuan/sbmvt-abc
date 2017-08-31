@@ -8,6 +8,7 @@ package com.coder4.sbmvt.abc.server.configuration;
 
 import com.coder4.sbmvt.JedisConnectionFactoryBuilder;
 import com.coder4.sbmvt.MyRedisProperties;
+import com.coder4.sbmvt.RedisJsonSerializer;
 import com.coder4.sbmvt.abc.server.data.Abc;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.context.properties.ConfigurationProperties;

@@ -15,6 +15,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * @author coder4
  */
@@ -35,10 +38,42 @@ public class RedisDemoController {
         abc.setId(1);
         abc.setSbc(RandomStringUtils.randomAlphanumeric(6));
         abcStorage2.saveAbc(id, abc);
+        System.out.println(abcStorage2.getAbc("ddd").orElse(null));
+
         abcStorage2.getString("dd");
 
         abcStorage2.saveString(id, RandomStringUtils.randomAlphanumeric(10));
         return "hello, " + id + "," + abcStorage2.getString(id);
+
+
+        /*
+        List<String> keys = new ArrayList<>();
+        for (int i = 0; i < 500000; i++) {
+            //abcStorage2.saveString(Integer.toString(i), RandomStringUtils.randomAlphanumeric(6));
+            keys.add(Integer.toString(i));
+        }
+
+        long start = System.currentTimeMillis();
+        abcStorage2.batchGetString(keys);
+        //keys.stream().forEach(key -> abcStorage2.getString(key));
+        System.out.println(System.currentTimeMillis() - start);
+        */
+
+        /*
+        List<String> keys = new ArrayList<>();
+        for (int i = 0; i < 100000; i++) {
+            //abcStorage2.saveAbc(Integer.toString(i), new Abc());
+            keys.add(Integer.toString(i));
+        }
+
+        long start = System.currentTimeMillis();
+        abcStorage2.batchGetAbc(keys);
+        //keys.stream().forEach(key -> abcStorage2.getString(key));
+        System.out.println(System.currentTimeMillis() - start);
+
+        return "Hello, pipelined";
+        */
+
     }
 
 }

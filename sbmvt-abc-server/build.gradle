@@ -12,7 +12,7 @@ dependencies {
     compile 'com.github.liheyuan:sbmvt-rabbitmq:0.0.1'
     // If Need Redis
     compile 'org.springframework.boot:spring-boot-starter-data-redis'
-    compile 'com.github.liheyuan:sbmvt-redis:0.0.1'
+    compile 'com.github.liheyuan:sbmvt-redis:0.0.2'
 
     compile 'com.github.liheyuan:sbmvt-thrift-server:0.0.3'
 

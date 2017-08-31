@@ -8,6 +8,9 @@ package com.coder4.sbmvt.abc.server.storage.spi;
 
 import com.coder4.sbmvt.abc.server.data.Abc;
 
+import java.util.List;
+import java.util.Optional;
+
 /**
  * @author coder4
  */
@@ -17,9 +20,13 @@ public interface AbcStorage2 {
 
     String getString(String key);
 
+    List<String> batchGetString(List<String> keys);
+
     void saveAbc(String key, Abc abc);
 
-    Abc readAbc(String key);
+    Optional<Abc> getAbc(String key);
+
+    List<Abc> batchGetAbc(List<String> key);
 
 
 }
