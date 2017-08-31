@@ -5,7 +5,7 @@ dependencies {
     compile 'org.springframework.boot:spring-boot-starter-web'
     compile 'org.springframework.boot:spring-boot-starter-actuator'
     // Thrift Server & Eureka Discovery
-    compile 'com.coder4.sbmvt:sbmvt-thrift-server:0.0.5'
+    compile 'com.github.liheyuan:sbmvt-thrift-server:0.0.5'
     // If Need MySQL
     compile 'org.springframework.boot:spring-boot-starter-jdbc'
     compile 'mysql:mysql-connector-java'
@@ -14,8 +14,6 @@ dependencies {
     // If Need Redis
     compile 'org.springframework.boot:spring-boot-starter-data-redis'
     compile 'com.github.liheyuan:sbmvt-redis:0.0.2'
-
-    //compile 'com.github.liheyuan:sbmvt-thrift-server:0.0.3'
 
     testCompile 'org.springframework.boot:spring-boot-starter-test'
 }
