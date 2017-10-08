@@ -38,12 +38,7 @@ public class CacheDemoController {
     )
     public String withCache(@RequestParam String value) {
         String cacheVal = localCache.get(cacheKey);
-        if (cacheVal == null) {
-            localCache.put(cacheKey, value);
-            return value;
-        } else {
-            return cacheVal;
-        }
+        return localCache.cacheGet(cacheKey, missKey -> value);
     }
 
     @RequestMapping(
@@ -52,13 +47,7 @@ public class CacheDemoController {
     )
     public String withMemcachedCache(@RequestParam String value) {
         CacheDemoKey key = new CacheDemoKey(cacheKey);
-        CacheDemoValue cacheVal = memcachedCache.get(key);
-        if (cacheVal == null) {
-            memcachedCache.put(key, new CacheDemoValue(value));
-            return value;
-        } else {
-            return cacheVal.getValue();
-        }
+        return memcachedCache.cacheGet(key, missKey -> new CacheDemoValue(value)).getValue();
     }
 
     @RequestMapping(
