@@ -51,6 +51,17 @@ sbmvtAbc.redis:
     min-idle: 2
     max-idle: 8
 
+# LocalCache
+sbmvtAbc.localCache:
+  ttlSecs: 10
+  capacity: 2
+
+# RemoteCache
+sbmvtAbc.memcachedCache:
+  #serverList: 192.168.99.100:11211, 192.168.99.101:11211
+  serverList: 192.168.99.100:11211
+  ttlSecs: 10
+
 # Profiles
 spring:
   profiles.active: test
