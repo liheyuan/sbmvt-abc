@@ -15,7 +15,7 @@ dependencies {
     compile 'org.springframework.boot:spring-boot-starter-data-redis'
     compile 'com.github.liheyuan:sbmvt-redis:0.0.2'
     // If Need Local/Memcached Cache
-    compile 'com.github.liheyuan:sbmvt-cache:0.0.4'
+    compile 'com.github.liheyuan:sbmvt-cache:0.0.5'
 
     testCompile 'org.springframework.boot:spring-boot-starter-test'
 }
