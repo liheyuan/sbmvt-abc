@@ -1,3 +1,5 @@
 dependencies {
-    compile('org.springframework.boot:spring-boot-starter-web')
+    compile project(':sbmvt-abc-server')
+
+    compile 'org.springframework.boot:spring-boot-starter-web'
 }
