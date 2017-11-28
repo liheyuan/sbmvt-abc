@@ -58,8 +58,8 @@ sbmvtAbc.localCache:
 
 # RemoteCache
 sbmvtAbc.memcachedCache:
-  #serverList: 192.168.99.100:11211, 192.168.99.101:11211
-  serverList: 192.168.99.100:11211
+  #serverList: sbmvt-memcached-test1:11211, sbmvt-memcached-test2:11211
+  serverList: sbmvt-memcached-test:11211
   ttlSecs: 10
 
 # Profiles

@@ -14,14 +14,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
-import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Import;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 /**
- * @author chentienan
+ * @author coder4
  */
 @ConditionalOnProperty(value = "jobs.active", havingValue = "DemoJob")
 @Service
@@ -30,11 +29,11 @@ public class DemoJob implements CommandLineRunner {
 
     private static final Logger LOG = LoggerFactory.getLogger(DemoJob.class);
 
-    @Value("${userId}")
-    private int usreId;
+    @Value("${dryRun:#{false}}")
+    private boolean dryRun;
 
-    @Value("#{'${ids:}'.split(',')}")
-    private List<Integer> ids;
+    @Value("#{'${userIds:}'.split(',')}")
+    private List<Integer> userIds;
 
     @Autowired
     private DemoService demoService;
@@ -43,9 +42,9 @@ public class DemoJob implements CommandLineRunner {
     public void run(String... args) throws Exception {
         LOG.info("start DemoJob");
 
-        LOG.info("userId = {}", usreId);
+        LOG.info("dryRun = {}", dryRun);
 
-        LOG.info("ids = {}", ids);
+        LOG.info("userIds = {}", userIds);
 
         int a = 1, b = 2;
 
