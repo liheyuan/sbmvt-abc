@@ -64,13 +64,20 @@ sbmvtAbc.memcachedCache:
 
 # Profiles
 spring:
-  profiles.active: test
+  profiles.active: test,local
+---
+spring:
+  profiles: local
+
+  # log config file
+  logging.config: classpath:logback.local.xml
 ---
 spring:
   profiles: test
 
-logging:
-  level.ROOT: INFO
+# log config file
+logging.config: classpath:logback.test.xml
+
 ---
 spring:
   profiles: online
