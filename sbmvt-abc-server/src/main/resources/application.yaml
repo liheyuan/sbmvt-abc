@@ -1,3 +1,9 @@
+# tomcat log
+server.tomcat.accesslog:
+    enabled: true
+    file-date-format: .yyyy_MM_dd
+    request-attributes-enabled: false
+    directory: /app/logs
 
 # Use different management port as security rule
 management:
@@ -19,7 +25,7 @@ eureka:
     nonSecurePort: ${sbmvtAbcThriftServer.port}
     lease-renewal-interval-in-seconds: 5
     lease-expiration-duration-in-seconds: 10
-  client.serviceUrl.defaultZone: http://localhost:8761/eureka/
+  client.serviceUrl.defaultZone: http://eureka-server-test:8761/eureka/
 
 # DB Config
 sbmvtAbc.datasource:
@@ -69,13 +75,16 @@ spring:
 spring:
   profiles: local
 
-  # log config file
-  logging.config: classpath:logback.local.xml
+# server log config file
+logging.config: classpath:logback.local.xml
+# disable tomcat log
+#server.tomcat.accesslog.enabled: false
+
 ---
 spring:
   profiles: test
 
-# log config file
+# server log config file
 logging.config: classpath:logback.test.xml
 
 ---

@@ -6,11 +6,11 @@
  */
 package com.coder4.sbmvt.abc.server.web.ctrl;
 
+import com.coder4.sbmvt.abc.constant.AbcConstant;
 import com.coder4.sbmvt.abc.server.cache.CacheDemoKey;
 import com.coder4.sbmvt.abc.server.cache.CacheDemoValue;
 import com.coder4.sbmvt.cache.LocalCache;
 import com.coder4.sbmvt.cache.MemcachedCache;
-import com.coder4.sbmvt.cache.configuration.LocalCacheConfig;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -20,7 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 /**
  * @author coder4
  */
-@RequestMapping("sbmvt-abc")
+@RequestMapping(AbcConstant.REST_API)
 @RestController
 public class CacheDemoController {
 

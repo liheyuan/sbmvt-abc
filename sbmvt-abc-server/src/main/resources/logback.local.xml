@@ -7,7 +7,9 @@
         </encoder>
     </appender>
 
-    <root level="DEBUG">
+    <logger name="com.coder4" level="DEBUG" />
+
+    <root level="INFO">
         <appender-ref ref="ConsoleAppender"/>
     </root>
 

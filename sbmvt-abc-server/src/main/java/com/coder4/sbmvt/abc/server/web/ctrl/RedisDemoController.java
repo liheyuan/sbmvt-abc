@@ -6,6 +6,7 @@
  */
 package com.coder4.sbmvt.abc.server.web.ctrl;
 
+import com.coder4.sbmvt.abc.constant.AbcConstant;
 import com.coder4.sbmvt.abc.server.storage.spi.AbcStorage2;
 import org.apache.commons.lang.RandomStringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,7 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 /**
  * @author coder4
  */
-@RequestMapping("sbmvt-abc")
+@RequestMapping(AbcConstant.REST_API)
 @RestController
 public class RedisDemoController {
 

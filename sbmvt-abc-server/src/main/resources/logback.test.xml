@@ -11,7 +11,7 @@
 
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
             <!-- daily rollover -->
-            <fileNamePattern>/app/logs/sbmvt-abc_%d{yyyy_MM_dd}.%i.log.gz</fileNamePattern>
+            <fileNamePattern>/app/logs/sbmvt-abc.%d{yyyy_MM_dd}.%i.log.gz</fileNamePattern>
             <!-- keep 30 days' worth of history -->
             <maxHistory>30</maxHistory>
             <!-- or whenever the file size reaches 10MB -->
@@ -22,7 +22,9 @@
         </rollingPolicy>
     </appender>
 
-    <root level="DEBUG">
+    <logger name="com.coder4" level="DEBUG" />
+
+    <root level="INFO">
         <appender-ref ref="ServerFileAppender"/>
     </root>
 

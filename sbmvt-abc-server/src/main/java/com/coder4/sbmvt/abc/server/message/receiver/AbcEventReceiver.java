@@ -6,6 +6,7 @@
  */
 package com.coder4.sbmvt.abc.server.message.receiver;
 
+import com.coder4.sbmvt.abc.constant.AbcConstant;
 import com.coder4.sbmvt.abc.server.message.event.AbcEvent;
 import com.coder4.sbmvt.rabbitmq.RabbitReceiver;
 import org.springframework.beans.factory.DisposableBean;
@@ -15,7 +16,7 @@ import org.springframework.stereotype.Service;
  * @author coder4
  */
 @Service
-public class AbcEventReceiver extends RabbitReceiver<AbcEvent> implements DisposableBean {
+public class AbcEventReceiver extends RabbitReceiver<AbcEvent> {
 
     @Override
     protected void onEvent(AbcEvent abcEvent) {
@@ -36,12 +37,8 @@ public class AbcEventReceiver extends RabbitReceiver<AbcEvent> implements Dispos
     }
 
     @Override
-    protected String getQueueName() {
-        return "queue1";
+    protected String getProjectName() {
+        return AbcConstant.PROJECT_NAME;
     }
 
-    @Override
-    public void destroy() throws Exception {
-        stop();
-    }
 }

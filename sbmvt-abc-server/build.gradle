@@ -10,7 +10,7 @@ dependencies {
     compile 'org.springframework.boot:spring-boot-starter-jdbc'
     compile 'mysql:mysql-connector-java'
     // If Need RabbitMQ
-    compile 'com.github.liheyuan:sbmvt-rabbitmq:0.0.1'
+    compile 'com.github.liheyuan:sbmvt-rabbitmq:0.0.2'
     // If Need Redis
     compile 'org.springframework.boot:spring-boot-starter-data-redis'
     compile 'com.github.liheyuan:sbmvt-redis:0.0.2'

@@ -6,12 +6,14 @@
  */
 package com.coder4.sbmvt.abc.server.web.ctrl;
 
+import com.coder4.sbmvt.abc.constant.AbcConstant;
 import com.coder4.sbmvt.abc.server.message.event.AbcEvent;
 import com.coder4.sbmvt.abc.server.message.receiver.AbcEventReceiver;
 import com.coder4.sbmvt.abc.server.message.sender.AbcEventSender;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
@@ -19,9 +21,11 @@ import org.springframework.web.bind.annotation.RestController;
 /**
  * @author coder4
  */
-@RequestMapping("sbmvt-abc")
+@RequestMapping(AbcConstant.REST_API + "/rabbit")
 @RestController
-public class HelloController {
+public class RabbitController {
+
+    private static final Logger LOG = LoggerFactory.getLogger(RabbitController.class);
 
     @Autowired
     private AbcEventSender sender;
@@ -30,25 +34,17 @@ public class HelloController {
     private AbcEventReceiver receiver;
 
     @RequestMapping(
-            value = "/echo",
-            method = RequestMethod.POST
-    )
-    public String echo(@RequestBody String echo) {
-        return echo;
-    }
-
-    @RequestMapping(
-            value = "/hello/{id}",
+            value = "/sendEvent/{cnt}",
             method = RequestMethod.GET
     )
-    public String getLessonUserReport(
-            @PathVariable(value = "id") String id) {
-        for (int i = 0; i < 3; i++) {
+    public String sendEvent(
+            @PathVariable(value = "cnt") int cnt) {
+        for (int i = 0; i < cnt; i++) {
             AbcEvent event = new AbcEvent();
-            event.setId(Integer.parseInt(id));
+            event.setId(i);
             sender.send(event);
         }
-        return "hello, " + id;
+        return cnt + " events send.";
     }
 
 }

@@ -13,7 +13,7 @@
 
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
             <!-- daily rollover -->
-            <fileNamePattern>/app/logs/sbmvt-abc_%d{yyyy_MM_dd}.%i.log.gz</fileNamePattern>
+            <fileNamePattern>/app/logs/sbmvt-abc.%d{yyyy_MM_dd}.%i.log.gz</fileNamePattern>
             <!-- keep 90 days' worth of history -->
             <maxHistory>90</maxHistory>
             <!-- or whenever the file size reaches 10MB -->
