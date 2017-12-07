@@ -1,21 +1,20 @@
-
 dependencies {
     compile project(':sbmvt-abc-common')
 
     compile 'org.springframework.boot:spring-boot-starter-web'
     compile 'org.springframework.boot:spring-boot-starter-actuator'
     // Thrift Server & Eureka Discovery
-    compile 'com.github.liheyuan:sbmvt-thrift-server:0.0.5'
+    compile 'com.coder4.sbmvt:thrift-server:0.0.5'
     // If Need MySQL
     compile 'org.springframework.boot:spring-boot-starter-jdbc'
     compile 'mysql:mysql-connector-java'
     // If Need RabbitMQ
-    compile 'com.github.liheyuan:sbmvt-rabbitmq:0.0.2'
+    compile 'com.coder4.sbmvt:rabbitmq:0.0.2'
     // If Need Redis
     compile 'org.springframework.boot:spring-boot-starter-data-redis'
-    compile 'com.github.liheyuan:sbmvt-redis:0.0.2'
+    compile 'com.coder4.sbmvt:redis:0.0.2'
     // If Need Local/Memcached Cache
-    compile 'com.github.liheyuan:sbmvt-cache:0.0.5'
+    compile 'com.coder4.sbmvt:cache:0.0.5'
 
     testCompile 'org.springframework.boot:spring-boot-starter-test'
 }

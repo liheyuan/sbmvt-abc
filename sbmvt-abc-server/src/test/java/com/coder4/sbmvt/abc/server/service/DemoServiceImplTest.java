@@ -1,11 +1,12 @@
 /**
- * @(#)DemoServiceImplTest.java, Nov 28, 2017.
+ * @(#)DemoServiceImplTest.java, Dec 07, 2017.
  * <p>
- * Copyright 2017 coder4.com. All rights reserved.
- * CODER4.COM PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
+ * Copyright 2017 fenbi.com. All rights reserved.
+ * FENBI.COM PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
  */
-package com.coder4.sbmvt.abc.server.service.impl;
+package com.coder4.sbmvt.abc.server.service;
 
+import com.coder4.sbmvt.abc.server.service.impl.DemoServiceImpl;
 import com.coder4.sbmvt.abc.server.service.spi.DemoService;
 import org.junit.Assert;
 import org.junit.Before;
@@ -32,5 +33,6 @@ public class DemoServiceImplTest {
 
         Assert.assertThat(a + b, is(demoService.add(a, b)));
     }
+
 
 }

@@ -8,7 +8,6 @@ package com.coder4.sbmvt.abc.server.web.ctrl;
 
 import com.coder4.sbmvt.abc.constant.AbcConstant;
 import com.coder4.sbmvt.abc.server.storage.spi.AbcStorage2;
-import org.apache.commons.lang.RandomStringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -39,7 +38,7 @@ public class RedisDemoController {
 
         abcStorage2.getString("dd");
 
-        abcStorage2.saveString(id, RandomStringUtils.randomAlphanumeric(10));
+        //abcStorage2.saveString(id, RandomStringUtils.randomAlphanumeric(10));
         return "hello, " + id + "," + abcStorage2.getString(id);
 
 

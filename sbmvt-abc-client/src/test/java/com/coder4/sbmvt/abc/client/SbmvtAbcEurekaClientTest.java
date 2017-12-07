@@ -6,7 +6,6 @@
  */
 package com.coder4.sbmvt.abc.client;
 
-import com.coder4.sbmvt.abc.client.SbmvtAbcEurekaClientBuilder;
 import com.coder4.sbmvt.abc.thrift.SbmvtAbcThrift;
 import com.coder4.sbmvt.thrift.client.ThriftClient;
 
