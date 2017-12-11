@@ -46,16 +46,14 @@ rabbitmq:
 
 # Redis Config
 sbmvtAbc.redis:
+  url: redis://notuse:hehehe@sbmvt-redis-test:6379
   database: 0
-  host: sbmvt-redis-test
-  port: 6379
-  password: hehehe
   timeout: 2000
-  pool:
-    max-active: 16
-    max-wait: -1
-    min-idle: 2
-    max-idle: 8
+  #pool:
+  #  max-active: 8
+  #  max-wait: -1
+  #  min-idle: 0
+  #  max-idle: 8
 
 # LocalCache
 sbmvtAbc.localCache:
