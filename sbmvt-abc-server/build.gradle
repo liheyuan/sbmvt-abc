@@ -6,8 +6,7 @@ dependencies {
     // Thrift Server & Eureka Discovery
     compile 'com.coder4.sbmvt:thrift-server'
     // If Need MySQL
-    compile 'org.springframework.boot:spring-boot-starter-jdbc'
-    compile 'mysql:mysql-connector-java'
+    compile 'com.coder4.sbmvt:database'
     // If Need RabbitMQ
     compile 'com.coder4.sbmvt:rabbitmq'
     // If Need Redis

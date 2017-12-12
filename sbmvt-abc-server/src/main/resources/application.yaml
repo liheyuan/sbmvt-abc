@@ -34,7 +34,7 @@ sbmvtAbc.datasource:
   password: hehehe 
   testOnBorrow: true
   validationQuery: SELECT 1
-  url: jdbc:mysql://sbmvt-mysql-test:3306/sbmvt-abc
+  url: jdbc:mysql://sbmvt-mysql-test:3306/sbmvt_abc?rewriteBatchedStatements=true
 
 # RabbitMQ Config
 rabbitmq:
@@ -96,7 +96,7 @@ logging:
 
 # Eureka Config Online
 eureka:
-  client.serviceUrl.defaultZone: http://eureka-server-online:8761/eureka/
+  client.serviceUrl.defaultZone: http://eureka-server-online:8761/eureka/]
 
 # DB Config Online
 sbmvtAbc.datasource.url: jdbc:mysql://sbmvt-mysql-online:3306/sbmvt-abc

@@ -11,7 +11,7 @@ package com.coder4.sbmvt.abc.server.data;
  */
 public class Abc {
     private int id;
-    private String sbc;
+    private String abc;
 
     public int getId() {
         return id;
@@ -21,11 +21,11 @@ public class Abc {
         this.id = id;
     }
 
-    public String getSbc() {
-        return sbc;
+    public String getAbc() {
+        return abc;
     }
 
-    public void setSbc(String sbc) {
-        this.sbc = sbc;
+    public void setAbc(String abc) {
+        this.abc = abc;
     }
 }

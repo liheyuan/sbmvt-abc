@@ -47,7 +47,7 @@ subprojects {
     // import commons parent bom
     dependencyManagement {
         imports {
-            mavenBom 'com.coder4.sbmvt:pom-parent:0.0.3'
+            mavenBom 'com.coder4.sbmvt:pom-parent:0.0.4'
         }
     }
 

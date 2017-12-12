@@ -34,7 +34,7 @@ public class RedisDemoController {
             @PathVariable(value = "id") String id) {
         Abc abc = new Abc();
         abc.setId(1);
-        abc.setSbc(RandomStringUtils.randomAlphanumeric(6));
+        abc.setAbc(RandomStringUtils.randomAlphanumeric(6));
         abcStorage2.saveAbc(id, abc);
         //System.out.println(abcStorage2.getAbc("ddd").orElse(null));
 

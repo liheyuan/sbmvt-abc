@@ -23,7 +23,7 @@ import java.util.stream.Collectors;
  * @author coder4
  */
 @Repository
-public class RedisAbcStorage2Impl implements AbcStorage2 {
+public class AbcStorage2RedisImpl implements AbcStorage2 {
 
     private static final String REDIS_STRING_PREFIX = "str_";
 

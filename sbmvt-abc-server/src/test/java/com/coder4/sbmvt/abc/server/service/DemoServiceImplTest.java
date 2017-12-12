@@ -18,7 +18,6 @@ import static org.hamcrest.core.Is.is;
  * @author coder4
  */
 public class DemoServiceImplTest {
-
     private DemoService demoService;
 
     @Before

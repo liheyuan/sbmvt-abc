@@ -24,9 +24,9 @@ public class DBConfiguration {
 
     @Bean
     @ConditionalOnBean(name = "sbmvtAbcDatasource")
-    public NamedParameterJdbcTemplate sbmvtAbcNamedParameterJdbcTemplate(
-            @Qualifier( "sbmvtAbcDatasource" ) DataSource dataSource
-    ) {
+    public NamedParameterJdbcTemplate sbmvtAbcTemplate(
+            @Qualifier("sbmvtAbcDatasource") DataSource dataSource) {
         return new NamedParameterJdbcTemplate(dataSource);
     }
+
 }
