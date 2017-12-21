@@ -89,11 +89,6 @@ logging.config: classpath:logback.test.xml
 spring:
   profiles: online
 
-logging:
-  level.ROOT: INFO
-  pattern.console:
-  file: my-sample-server.log
-
 # Eureka Config Online
 eureka:
   client.serviceUrl.defaultZone: http://eureka-server-online:8761/eureka/]
